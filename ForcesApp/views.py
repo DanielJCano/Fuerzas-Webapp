@@ -4,12 +4,6 @@ from .models import Colector_datos
 from .utils import get_plot
 # Create your views here.
 
-
-def index(request):
-
-    return render(request, "homepage/data_viewer.html")
-
-
 def template(request):
     return render(request, "homepage/template.html")
 
