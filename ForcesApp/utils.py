@@ -14,12 +14,12 @@ def get_graph():
 
 def get_plot(x,y):
     plt.switch_backend('AGG')
-    plt.figure(figsize=(7,4))
+    plt.figure(figsize=(6,4))
     plt.title('Grafica Fuerzas')
     plt.plot(x,y)
     plt.xticks(rotation=45)
-    plt.xlabel('voltaje')
-    plt.ylabel('tiempo')
+    plt.xlabel('tiempo')
+    plt.ylabel('voltaje')
     plt.tight_layout()
     graph = get_graph()
     return graph

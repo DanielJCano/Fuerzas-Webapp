@@ -42,20 +42,17 @@ from ForcesApp.models import Colector_datos
 
 def clientthread(conn, addr):
 	global CURRENT_TIME
-	# sends a message to the client whose user object is conn
-	conn.send("Welcome to this chatroom!".encode())
 
 	while True:
 			try:
 				message = conn.recv(4096).decode()
 				if message:
-
-					Colector_datos.objects.create(tiempo=CURRENT_TIME, dato=int(message))
+					# calculo del peso a mandar a la base de datos
+					w = message * 453.59 / 16.94
+					Colector_datos.objects.create(tiempo=CURRENT_TIME, dato=int(w))
 					CURRENT_TIME += 0.5
-					print(message)
-					# Calls broadcast function to send message to all
-					# message_to_send = "<" + addr[0] + "> " + message
-					# broadcast(message_to_send, conn)
+					print(f'{message} => {w}')
+
 
 				else:
 					remove(conn)

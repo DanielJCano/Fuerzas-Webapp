@@ -1,18 +1,182 @@
 {% extends 'homepage/template.html' %}
+{% load static %}
+
 {% block body %}
+<style>
+    #dataR {
+        max-height: 350px;
+        overflow: scroll;
+    }
+
+    .form {
+        border-radius: 20px;
+        box-sizing: border-box;
+        height: 500px;
+        padding: 20px;
+        width: 320px;
+    }
+
+    .title {
+        color: rgb(89, 98, 118);
+        font-family: sans-serif;
+        font-size: 36px;
+        font-weight: 600;
+        margin-top: 30px;
+    }
+
+    .input-container {
+        height: 50px;
+        position: relative;
+        width: 100%;
+    }
+
+    .ic1 {
+        margin-top: 40px;
+    }
+
+    .ic2 {
+        margin-top: 30px;
+    }
+
+    .input {
+        background-color: #303245;
+        border-radius: 12px;
+        border: 0;
+        box-sizing: border-box;
+        color: #eee;
+        font-size: 18px;
+        height: 100%;
+        outline: 0;
+        padding: 4px 20px 0;
+        width: 100%;
+    }
+
+    .cut {
+        background-color: #d1d2db;
+        border-radius: 10px;
+        height: 20px;
+        left: 20px;
+        position: absolute;
+        top: -20px;
+        transform: translateY(0);
+        transition: transform 200ms;
+        width: 110px;
+    }
+
+    .cut-short {
+        width: 100px;
+    }
+
+    .input:focus~.cut,
+    .input:not(:placeholder-shown)~.cut {
+        transform: translateY(8px);
+    }
+
+    .placeholder {
+        color: #65657b;
+        font-family: sans-serif;
+        left: 20px;
+        line-height: 14px;
+        pointer-events: none;
+        position: absolute;
+        transform-origin: 0 50%;
+        transition: transform 200ms, color 200ms;
+        top: 20px;
+    }
+
+    .input:focus~.placeholder,
+    .input:not(:placeholder-shown)~.placeholder {
+        transform: translateY(-30px) translateX(10px) scale(0.75);
+    }
+
+    .input:not(:placeholder-shown)~.placeholder {
+        color: #808097;
+    }
+
+    .input:focus~.placeholder {
+        color: #39465b;
+    }
+
+    .submit {
+        background-color: #08d;
+        border-radius: 12px;
+        border: 0;
+        box-sizing: border-box;
+        color: #eee;
+        cursor: pointer;
+        font-size: 18px;
+        height: 50px;
+        margin-top: 38px;
+        outline: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .submit:active {
+        background-color: #06b;
+    }
+</style>
+
     <div class="container justify-content-center">
         <div class='row'>
-            <div class='col-md-'>
-                <h1>Grafica</h1>
-                <div>
+            <div class='col-xl align-middle'>
+                <h1 class="title">Grafica</h1>
                 {% if chart %}
-                    <img src="data:image/png;base64, {{chart|safe}}"
+                <img src="data:image/png;base64, {{chart|safe}}"></img>
                 {% endif %}
-                </div>
             </div>
-            <div class="col-md-">
-                <h1>Settings</h1>
+            <div class="col-md">
+                
+                <div class="form">
+                    <h1 class="title">Settings</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="input-container ic1">
+                            <input id="firstname" class="input" type="number" placeholder=" " name="ID_Start"/>
+                            <div class="cut"></div>
+                            <label for="firstname" class="placeholder">Inico de Grafica:</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <input id="lastname" class="input" type="number" name="ID_End" placeholder=" " />
+                            <div class="cut"></div>
+                            <label for="lastname" class="placeholder">Final de Grafica</label>
+                        </div>
+                        <button type="text" class="submit">submit</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
+    <div class="container">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th scope='col'>#</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Tiempo</th>
+                    <th scope="col">Dato</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class='container text-center' id="dataR">
+        <table class="table table-bordered">
+            <div class="lista_datos">
+                <tbody>
+                    {% for x in Colector %}
+                    <tr>
+                        <td>{{x.id}}</td>
+                        <td></td>
+                        <td>{{x.tiempo}}</td>
+                        <td>{{x.dato}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </div>
+        </table>
+
+    </div>
 {% endblock %}
+
