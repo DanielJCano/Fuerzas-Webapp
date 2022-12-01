@@ -14,7 +14,8 @@ def get_graph():
 
 def get_plot(x,y):
     plt.switch_backend('AGG')
-    plt.figure(figsize=(6,4))
+    plt.figure(figsize=(5,4))
+    plt.grid()
     plt.title('Grafica Fuerzas')
     plt.plot(x,y)
     plt.xticks(rotation=45)
