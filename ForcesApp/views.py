@@ -15,18 +15,15 @@ def main_view(request):
     End = None
     Start = request.POST.get('ID_Start')
     End = request.POST.get('ID_End')
-    if Start == None: 
-        x=0 
+    if Start == None or End == None: 
+        desp_data, tc_data = 0, 0
     else:
         Start, End = int(Start), int(End)
-        x = [x.tiempo for x in qs[Start:End]]
-    if End == None:
-        y=0
-    else:
-        Start, End = int(Start), int(End)
-        y = [y.dato for y in qs[Start:End]]
-
-    
-    chart = get_plot(x,y)
+        tc_data = [tc_data.tiempo for tc_data in qs[Start:End]]
+        desp_data = [desp_data.dato for desp_data in qs[Start:End]]
+        for x in tc_data:
+            for y in desp_data:
+                print(f"{x} - {y}")
+    chart = get_plot(tc_data, desp_data)
     return render(request, 'homepage/data_viewer.html', {'chart': chart, 'Colector':COLECTOR})
 

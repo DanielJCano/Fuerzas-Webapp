@@ -23,12 +23,12 @@
                         <div class="input-container ic1">
                             <input id="firstname" class="input" type="number" placeholder=" " name="ID_Start"/>
                             <div class="cut"></div>
-                            <label for="firstname" class="placeholder">Inico de Grafica:</label>
+                            <label for="firstname" class="placeholder">Insert Start ID</label>
                         </div>
                         <div class="input-container ic2">
                             <input id="lastname" class="input" type="number" name="ID_End" placeholder=" " />
                             <div class="cut"></div>
-                            <label for="lastname" class="placeholder">Final de Grafica</label>
+                            <label for="lastname" class="placeholder">Insert End ID</label>
                         </div>
                         <button type="text" class="submit">submit</button>
                     </form>
@@ -49,7 +49,7 @@
                 <tr>
                     <th scope='col'>#</th>
                     <th scope="col">Fecha</th>
-                    <th scope="col">Tiempo</th>
+                    <th scope="col">Desplazamiento</th>
                     <th scope="col">Dato</th>
                 </tr>
             </thead>
@@ -57,7 +57,7 @@
                     {% for x in Colector %}
                     <tr>
                         <td>{{x.id}}</td>
-                        <td></td>
+                        <td>{{x.fecha}}</td>
                         <td>{{x.tiempo}}</td>
                         <td>{{x.dato}}</td>
                     </tr>

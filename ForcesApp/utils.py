@@ -19,8 +19,8 @@ def get_plot(x,y):
     plt.title('Grafica Fuerzas')
     plt.plot(x,y)
     plt.xticks(rotation=45)
-    plt.xlabel('tiempo')
-    plt.ylabel('voltaje')
+    plt.xlabel('Desplazamiento')
+    plt.ylabel('Fuerza')
     plt.tight_layout()
     graph = get_graph()
     return graph

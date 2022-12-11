@@ -1,29 +1,12 @@
-# Python program to implement server side of chat room.
 import socket
-import select
 import sys
 from _thread import *
 import django
 import os
+from datetime import datetime
+
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-# checks whether sufficient arguments have been provided
-# if len(sys.argv) != 3:
-	# print ("Correct usage: script, IP address, port number")
-	# exit()
-
-# takes the first argument from command prompt as IP address
-# IP_address = str(sys.argv[1])
-
-# takes second argument from command prompt as port number
-# Port = int(sys.argv[2])
-
-"""
-binds the server to an entered IP address and at the
-specified port number.
-The client must be aware of these parameters
-"""
 server.bind(("192.168.1.100", 5000))
 print("server running ...")
 
@@ -32,7 +15,6 @@ listens for 100 active connections. This number can be
 increased as per convenience.
 """
 server.listen(110)
-
 LIST_OF_CLIENTS = []
 CURRENT_TIME = 0
 
@@ -44,39 +26,23 @@ def clientthread(conn, addr):
 	global CURRENT_TIME
 
 	while True:
-			try:
-				message = conn.recv(4096).decode()
-				if message:
-					# calculo del peso a mandar a la base de datos
-					w = message * 453.59 / 16.94
-					Colector_datos.objects.create(tiempo=CURRENT_TIME, dato=int(w))
-					CURRENT_TIME += 0.5
-					print(f'{message} => {w}')
+			#try:
+			message = conn.recv(4096).decode()
+			if message:
+				TC_Data, DESP_Data = message.split()
+				now = datetime.now()
+				TC_Data = float(TC_Data)
+				fuerza =  TC_Data * 453.59 / 16.94		# calculo del peso a mandar a la base de datos
+				print(now.strftime("%d/%m/%Y %H:%M:%S") + " " + message + " => " + str(fuerza))
+				#print(f"{now} | {message} => {fuerza}")
+				Colector_datos.objects.create(tiempo=int(DESP_Data), dato=int(fuerza), fecha=now.strftime("%d/%m/%Y %H:%M:%S"))
+				CURRENT_TIME += 0.5
 
 
-				else:
-					remove(conn)
+			else:
+				print("error")
+				remove(conn)
 
-			except:
-				continue
-
-"""Using the below function, we broadcast the message to all
-clients who's object is not the same as the one sending
-the message """
-def broadcast(message, connection):
-	for clients in LIST_OF_CLIENTS:
-		if clients!=connection:
-			try:
-				clients.send(message.encode())
-			except:
-				clients.close()
-
-				# if the link is broken, we remove the client
-				remove(clients)
-
-"""The following function simply removes the object
-from the list that was created at the beginning of
-the program"""
 def remove(connection):
 	if connection in LIST_OF_CLIENTS:
 		LIST_OF_CLIENTS.remove(connection)
